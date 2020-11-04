@@ -6,7 +6,7 @@ ENV LANG C.UTF-8
 
 # Enable cross-build for aarch64
 COPY ./vendor/qemu-bin /usr/bin/
-RUN [ "cross-build-start" ]
+#RUN [ "cross-build-start" ]
 
 # Set the versions
 ENV DOCKER_COMPOSE_VER 1.22.0
@@ -18,7 +18,7 @@ ENV SIX_VER 1.11.0
 
 # Install dependencies
 # RUN apt-get update && apt-get install -y
-RUN pip install six==$SIX_VER
+RUN pip install -i https://pypi.tuna.tsinghua.edu.cn/simple six==$SIX_VER
 
 # Compile the pyinstaller "bootloader"
 # https://pyinstaller.readthedocs.io/en/stable/bootloader-building.html
@@ -34,7 +34,7 @@ RUN git clone https://github.com/docker/compose.git . \
 
 # Run the build steps (taken from github.com/docker/compose/script/build/linux-entrypoint)
 RUN mkdir ./dist \
-    && pip install -q -r requirements.txt -r requirements-build.txt \
+    && pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -q -r requirements.txt -r requirements-build.txt \
     && ./script/build/write-git-sha \
     && pyinstaller docker-compose.spec \
     && mv dist/docker-compose ./docker-compose-$(uname -s)-$(uname -m)
